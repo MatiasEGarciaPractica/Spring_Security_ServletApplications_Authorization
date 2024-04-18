@@ -21,13 +21,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/auth/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"auth",
 						"login"
 					]
 				}
@@ -40,13 +41,14 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/closeSession",
+					"raw": "http://localhost:8080/auth/closeSession",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"auth",
 						"closeSession"
 					]
 				}
@@ -59,33 +61,55 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/admin",
+					"raw": "http://localhost:8080/admin/hello",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"admin"
+						"admin",
+						"hello"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "employee request",
+			"name": "employee hello request",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/employee",
+					"raw": "http://localhost:8080/employee/hello",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"employee"
+						"employee",
+						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "employee hello request but, for admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/employee/helloAdmin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"employee",
+						"helloAdmin"
 					]
 				}
 			},
@@ -97,14 +121,105 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/user",
+					"raw": "http://localhost:8080/user/hello",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"user"
+						"user",
+						"hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Extract value",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/extractValue/employee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"extractValue",
+						"employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Regex request on user controller, only admin can",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/user/eEEEE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"eEEEE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "The magic words",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/IKnowTheMagicWords?magicWords=openSesame",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"IKnowTheMagicWords"
+					],
+					"query": [
+						{
+							"key": "magicWords",
+							"value": "openSesame"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Membership",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Membership",
+						"value": "old",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/membership",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"membership"
 					]
 				}
 			},
