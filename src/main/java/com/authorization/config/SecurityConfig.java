@@ -25,6 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize ->
                 authorize.requestMatchers("/admin/**").hasRole(Roles.ADMIN.toString())
                         .requestMatchers("/employee/**").hasRole(Roles.EMPLOYEE.toString())
-                        .requestMatchers("/user/**").hasRole(Roles.USER.toString())
+                        .requestMatchers("/user/hello").hasRole(Roles.USER.toString())
+                        .requestMatchers(RegexRequestMatcher.regexMatcher("/user/eE+")).hasRole(Roles.ADMIN.toString()) //only endpoint which match this regular expression
                         .requestMatchers("/extractValue/{name}").access(
                                 new WebExpressionAuthorizationManager("#name == authentication.name")
                         ));

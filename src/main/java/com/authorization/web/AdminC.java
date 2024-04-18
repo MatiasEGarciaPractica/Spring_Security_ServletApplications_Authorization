@@ -14,6 +14,4 @@ public class AdminC {
         return ResponseEntity.ok("hello admin");
     }
 
-
-
 }
