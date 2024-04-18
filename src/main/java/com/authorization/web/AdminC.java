@@ -13,4 +13,7 @@ public class AdminC {
     public ResponseEntity<String> hello(){
         return ResponseEntity.ok("hello admin");
     }
+
+
+
 }

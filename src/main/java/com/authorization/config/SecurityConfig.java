@@ -22,6 +22,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
@@ -43,7 +44,10 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize ->
                 authorize.requestMatchers("/admin/**").hasRole(Roles.ADMIN.toString())
                         .requestMatchers("/employee/**").hasRole(Roles.EMPLOYEE.toString())
-                        .requestMatchers("/user/**").hasRole(Roles.USER.toString()));
+                        .requestMatchers("/user/**").hasRole(Roles.USER.toString())
+                        .requestMatchers("/extractValue/{name}").access(
+                                new WebExpressionAuthorizationManager("#name == authentication.name")
+                        ));
         return http.build();
     }
 
