@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
@@ -35,9 +37,11 @@ public class SecurityConfig {
      * Login using authenticationManager bean.
      */
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   AuthorizationManager<RequestAuthorizationContext> authz) //OpenPolicyAgentAuthorizationmanager
+            throws Exception {
         //Custom matcher
-        RequestMatcher openSesame = (request) -> request.getParameter("magicWords").equalsIgnoreCase("openSesame");
+        //RequestMatcher openSesame = (request) -> request.getParameter("magicWords").equalsIgnoreCase("openSesame");
 
 
         http.csrf(AbstractHttpConfigurer::disable); //without this the client cannot enter login method.
@@ -45,7 +49,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/login").permitAll());
         http.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers(openSesame).hasAnyRole(Roles.ADMIN.toString(), Roles.USER.name(), Roles.EMPLOYEE.toString())
+                        //.requestMatchers(openSesame).hasAnyRole(Roles.ADMIN.toString(), Roles.USER.name(), Roles.EMPLOYEE.toString())
                         .requestMatchers("/admin/**").hasRole(Roles.ADMIN.toString())
                         .requestMatchers(HttpMethod.POST, "/employee/**").hasRole(Roles.ADMIN.name())
                         .requestMatchers(HttpMethod.GET ,"/employee/**").hasRole(Roles.EMPLOYEE.toString())
@@ -53,7 +57,8 @@ public class SecurityConfig {
                         .requestMatchers(RegexRequestMatcher.regexMatcher("/user/eE+")).hasRole(Roles.ADMIN.toString()) //only endpoint which match this regular expression
                         .requestMatchers("/extractValue/{name}").access(
                                 new WebExpressionAuthorizationManager("#name == authentication.name")
-                        ));
+                        )
+                        .requestMatchers("/membership").access(authz));
         return http.build();
     }
 
