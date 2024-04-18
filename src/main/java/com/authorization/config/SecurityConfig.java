@@ -3,10 +3,6 @@ package com.authorization.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,6 +22,7 @@ import org.springframework.security.web.access.expression.WebExpressionAuthoriza
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.List;
 
@@ -39,11 +36,17 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //Custom matcher
+        RequestMatcher openSesame = (request) -> request.getParameter("magicWords").equalsIgnoreCase("openSesame");
+
+
         http.csrf(AbstractHttpConfigurer::disable); //without this the client cannot enter login method.
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/closeSession").authenticated()
                 .requestMatchers("/auth/login").permitAll());
         http.authorizeHttpRequests(authorize ->
-                authorize.requestMatchers("/admin/**").hasRole(Roles.ADMIN.toString())
+                authorize
+                        .requestMatchers(openSesame).hasAnyRole(Roles.ADMIN.toString(), Roles.USER.name(), Roles.EMPLOYEE.toString())
+                        .requestMatchers("/admin/**").hasRole(Roles.ADMIN.toString())
                         .requestMatchers(HttpMethod.POST, "/employee/**").hasRole(Roles.ADMIN.name())
                         .requestMatchers(HttpMethod.GET ,"/employee/**").hasRole(Roles.EMPLOYEE.toString())
                         .requestMatchers("/user/hello").hasRole(Roles.USER.toString())

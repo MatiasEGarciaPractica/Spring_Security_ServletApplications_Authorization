@@ -5,16 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * only who knows the magic words can enter
- */
 @RestController
-@RequestMapping("/admin")
-public class AdminC {
+@RequestMapping
+public class MagicC {
 
-    @GetMapping(value = "/hello")
-    public ResponseEntity<String> hello(){
-        return ResponseEntity.ok("hello admin");
+    @GetMapping(value = "/IKnowTheMagicWords")
+    public ResponseEntity<String> openSesame(){
+        return ResponseEntity.ok("Congratulations, you may enter");
     }
 
 }
