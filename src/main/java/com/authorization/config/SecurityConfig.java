@@ -44,7 +44,8 @@ public class SecurityConfig {
                 .requestMatchers("/auth/login").permitAll());
         http.authorizeHttpRequests(authorize ->
                 authorize.requestMatchers("/admin/**").hasRole(Roles.ADMIN.toString())
-                        .requestMatchers("/employee/**").hasRole(Roles.EMPLOYEE.toString())
+                        .requestMatchers(HttpMethod.POST, "/employee/**").hasRole(Roles.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET ,"/employee/**").hasRole(Roles.EMPLOYEE.toString())
                         .requestMatchers("/user/hello").hasRole(Roles.USER.toString())
                         .requestMatchers(RegexRequestMatcher.regexMatcher("/user/eE+")).hasRole(Roles.ADMIN.toString()) //only endpoint which match this regular expression
                         .requestMatchers("/extractValue/{name}").access(
