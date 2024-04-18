@@ -38,12 +38,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable); //without this the client cannot enter login method.
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/closeSession").authenticated()
-                .requestMatchers("/login").permitAll());
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/closeSession").authenticated()
+                .requestMatchers("/auth/login").permitAll());
         http.authorizeHttpRequests(authorize ->
-                authorize.requestMatchers("/admin").hasRole(Roles.ADMIN.toString())
-                        .requestMatchers("/employee").hasRole(Roles.EMPLOYEE.toString())
-                        .requestMatchers("/user").hasRole(Roles.USER.toString()));
+                authorize.requestMatchers("/admin/**").hasRole(Roles.ADMIN.toString())
+                        .requestMatchers("/employee/**").hasRole(Roles.EMPLOYEE.toString())
+                        .requestMatchers("/user/**").hasRole(Roles.USER.toString()));
         return http.build();
     }
 
@@ -88,25 +88,5 @@ public class SecurityConfig {
     public SecurityContextHolderStrategy securityContextHolderStrategy(){
         return  SecurityContextHolder.getContextHolderStrategy();
     }
-
-    //beans for role config
-    @Bean
-    static RoleHierarchy roleHierarchy(){
-        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-        //users with role admin will have role employee and have role user.
-        //users with role employee will have role user too.
-        //users with role user will have only that role.
-        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_EMPLOYEE\n" +
-                "ROLE_EMPLOYEE > ROLE_USER\n");
-        return hierarchy;
-    }
-
-    @Bean
-    static MethodSecurityExpressionHandler methodSecurityExpressionHandler(RoleHierarchy roleHierarchy){
-        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
-        expressionHandler.setRoleHierarchy(roleHierarchy);
-        return expressionHandler;
-    }
-
 
 }
