@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "afecb938-39d6-470e-bf2d-10d2f86f7800",
+		"name": "Spring authorization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20707228"
+	},
+	"item": [
+		{
+			"name": "AuthC",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"employee\", // admin, employee, user\r\n    \"password\" : \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "closeSession",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/closeSession",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"closeSession"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "basicActionC",
+			"item": [
+				{
+					"name": "admin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/basicAction/admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"basicAction",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/basicAction/employee",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"basicAction",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/basicAction/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"basicAction",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FilterC",
+			"item": [
+				{
+					"name": "Filter asian countries",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n        {\r\n            \"countryName\" : \"China\",\r\n            \"continent\" : \"asia\"\r\n        },\r\n        {\r\n            \"countryName\" : \"EEUU\",\r\n            \"continent\" : \"america\"\r\n        },\r\n        {\r\n            \"countryName\" : \"Japan\",\r\n            \"continent\" : \"Asia\"\r\n        },\r\n        {\r\n            \"countryName\" : \"Italy\",\r\n            \"continent\" : \"europe\"\r\n        }\r\n    ]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/filter/asian",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"filter",
+								"asian"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CustomAuthorizationC",
+			"item": [
+				{
+					"name": "admin with SpEl",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customAuthorization/admin/SpEL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customAuthorization",
+								"admin",
+								"SpEL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Only user can Enter(CustomAuthenticationManager)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customAuthorization/user/managerAuthentication/canEnterOnMethod",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customAuthorization",
+								"user",
+								"managerAuthentication",
+								"canEnterOnMethod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Only Employee can get result (CustomAuthenticationManager)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/customAuthorization/employee/managerAuthentication/canGetResult",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customAuthorization",
+								"employee",
+								"managerAuthentication",
+								"canGetResult"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

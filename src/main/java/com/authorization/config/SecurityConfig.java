@@ -34,20 +34,20 @@ import java.util.List;
 @EnableWebSecurity
 //added the prePostEnabled to use CustomEnterAuthorizationManager and CustomResultAuthorizationManager,
 //spring has its own implementation, so I need to disable it.
-@EnableMethodSecurity(prePostEnabled = false)
+@EnableMethodSecurity//(prePostEnabled = false)
 public class SecurityConfig {
 
-    @Bean("customPreAuthorize")
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    Advisor preAuthorize(CustomEnterAuthorizationManager manager){
-        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(manager);
-    }
-
-    @Bean("customPostAuthorize")
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    Advisor postAuthorize(CustomResultAuthorizationManager manager){
-        return AuthorizationManagerAfterMethodInterceptor.postAuthorize(manager);
-    }
+//    @Bean("customPreAuthorize")
+//    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+//    Advisor preAuthorize(CustomEnterAuthorizationManager manager){
+//        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(manager);
+//    }
+//
+//    @Bean("customPostAuthorize")
+//    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+//    Advisor postAuthorize(CustomResultAuthorizationManager manager){
+//        return AuthorizationManagerAfterMethodInterceptor.postAuthorize(manager);
+//    }
 
 
     @Bean
