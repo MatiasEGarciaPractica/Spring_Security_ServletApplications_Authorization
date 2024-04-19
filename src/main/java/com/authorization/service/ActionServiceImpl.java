@@ -16,7 +16,7 @@ public class ActionServiceImpl {
     }
 
     @PreAuthorize("hasRole('EMPLOYEE')")
-    @PostAuthorize("returnObject.username == authentication.name")
+    @RequireOwnership
     public Account employeeBasicAction(){
         System.out.println("I will realize the action to the employee");
         return new Account("employee", "Hello employee, the action was realized");
