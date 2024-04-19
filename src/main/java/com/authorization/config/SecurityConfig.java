@@ -1,10 +1,17 @@
 package com.authorization.config;
 
+import com.authorization.customAuthorizations.CustomEnterAuthorizationManager;
+import com.authorization.customAuthorizations.CustomResultAuthorizationManager;
+import org.springframework.aop.Advisor;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authorization.method.AuthorizationManagerAfterMethodInterceptor;
+import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,8 +32,23 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+//added the prePostEnabled to use CustomEnterAuthorizationManager and CustomResultAuthorizationManager,
+//spring has its own implementation, so I need to disable it.
+@EnableMethodSecurity(prePostEnabled = false)
 public class SecurityConfig {
+
+    @Bean("customPreAuthorize")
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    Advisor preAuthorize(CustomEnterAuthorizationManager manager){
+        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(manager);
+    }
+
+    @Bean("customPostAuthorize")
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    Advisor postAuthorize(CustomResultAuthorizationManager manager){
+        return AuthorizationManagerAfterMethodInterceptor.postAuthorize(manager);
+    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
